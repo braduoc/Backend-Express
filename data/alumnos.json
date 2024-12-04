@@ -1,0 +1,23 @@
+[
+  {
+    "id": "alumno-1",
+    "nombre": "Angel",
+    "email": "alumno1@duoc.cl",
+    "password": "$2a$10$5ZL/SRo2YD0./.POO/PlH.GDqmYKmBLDusiXJne7dQ2SDLbX9m5D6",
+    "status": false
+  },
+  {
+    "id": "alumno-2",
+    "nombre": "Iahn",
+    "email": "alumno2@duoc.cl",
+    "password": "$2a$10$jQJ9iKvVz2kMbVNTrfqPnu1mHPY0I0dxIztCU68b7HOwD/ysCY5Vm",
+    "status": false
+  },
+  {
+    "id": "alumno-3",
+    "nombre": "Brando",
+    "email": "alumno3@duoc.cl",
+    "password": "$2a$10$IwaygMp112HOnhuyEURLf.pxwvwhPm0D5ke1b39g9rxuWFrqJ6ta6",
+    "status": false
+  }
+]

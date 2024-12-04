@@ -1,0 +1,44 @@
+[
+  {
+    "id": "docente-1",
+    "nombre": "Diego",
+    "email": "profesor@duoc.cl",
+    "password": "$2a$10$kI6Nio4J6s1pC4bLl8nSY.TOlNd5/LM/7LRh1EQZzwnYqnSfZELoS",
+    "cursos": [
+      {
+        "nombre": "Matemáticas",
+        "codigo": "MAT101",
+        "alumnos": [
+          
+          { "id": "alumno-1", "nombre": "Angel", "email": "alumno1@duoc.cl", "status": false   },
+          { "id": "alumno-2", "nombre": "Iahn", "email": "alumno2@duoc.cl", "status": false },
+          { "id": "alumno-3", "nombre": "Brando", "email": "alumno3@duoc.cl", "status": false },
+          { "id": "alumno-4", "nombre": "Ana González", "email": "ana.gonzalez@duoc.cl", "status": false },
+          { "id": "alumno-5", "nombre": "Luis Ramírez", "email": "luis.ramirez@duoc.cl", "status": false }
+        ]
+      },
+      {
+        "nombre": "Física", 
+        "codigo": "FIS101",
+        "alumnos": [
+          { "id": "alumno-6", "nombre": "Laura Torres", "email": "laura.torres@duoc.cl", "status": false },
+          { "id": "alumno-7", "nombre": "Pedro Castillo", "email": "pedro.castillo@duoc.cl", "status": false },
+          { "id": "alumno-8", "nombre": "Sofía Morales", "email": "sofia.morales@duoc.cl", "status": false },
+          { "id": "alumno-9", "nombre": "Miguel Herrera", "email": "miguel.herrera@duoc.cl", "status": false },
+          { "id": "alumno-10", "nombre": "Carmen Díaz", "email": "carmen.diaz@duoc.cl", "status": false }
+        ]
+      },
+      {
+        "nombre": "Química",
+        "codigo": "QUI101",
+        "alumnos": [
+          { "id": "alumno-11", "nombre": "Fernando Rojas", "email": "fernando.rojas@duoc.cl", "status": false },
+          { "id": "alumno-12", "nombre": "Patricia Vega", "email": "patricia.vega@duoc.cl", "status": false },
+          { "id": "alumno-13", "nombre": "Jorge Navarro", "email": "jorge.navarro@duoc.cl", "status": false },
+          { "id": "alumno-14", "nombre": "Elena Cruz", "email": "elena.cruz@duoc.cl", "status": false },
+          { "id": "alumno-15", "nombre": "Raúl Mendoza", "email": "raul.mendoza@duoc.cl", "status": false }
+        ]
+      }
+    ]
+  }
+]
