@@ -13,8 +13,6 @@ const docentesFilePath = path.join(__dirname, '../data/docentes.json');
 const server = http.createServer(router);
 const io = socketIo(server);
 
-
-
 // Función para leer el archivo JSON de docentes
 const readDocentesFile = () => {
     if (!fs.existsSync(docentesFilePath)) {
@@ -23,25 +21,24 @@ const readDocentesFile = () => {
     const data = fs.readFileSync(docentesFilePath);
     return JSON.parse(data);
 };
- // Start of Selection
 
-// Generar código QR para asistencia
+// Función para escribir los datos de docentes al archivo JSON
+const writeDocentesFile = (docentes) => {
+    fs.writeFileSync(docentesFilePath, JSON.stringify(docentes, null, 2), 'utf8');
+};
 
-
-
-// Start of Selection
 // Registrar asistencia
 router.post('/registrar', (req, res) => {
-    const { alumnoId } = req.body; // Recibir el ID del alumno desde el cuerpo de la solicitud
+    const { alumnoId } = req.body;
     const docentes = readDocentesFile();
-    let alumnoEncontrado = null;
+    let alumnoEncontrado = false;
+    let alumno = null;
 
-    // Buscar al alumno en todos los cursos de todos los docentes
     for (const docente of docentes) {
         for (const curso of docente.cursos) {
-            const alumno = curso.alumnos.find(a => a.id === alumnoId);
+            alumno = curso.alumnos.find(a => a.id === alumnoId);
             if (alumno) {
-                alumnoEncontrado = alumno;
+                alumnoEncontrado = true;
                 break;
             }
         }
@@ -49,15 +46,48 @@ router.post('/registrar', (req, res) => {
     }
 
     if (!alumnoEncontrado) {
-        return res.status(404).json({ success: false, message: 'Alumno no encontrado' });
+        return res.status(404).json({ success: false, message: 'Alumno no encontrado', encontrado: false });
     }
-    // Actualizar el estado de presencia del alumno a true
-    alumnoEncontrado.status = true;
 
-    // Emitir evento de nueva asistencia
-    io.emit('nuevaAsistencia');
+    alumno.status = true;
+    io.emit('nuevaAsistencia', { alumnoId });
 
-    res.json({ success: true, message: `Asistencia registrada y estado de presencia actualizado para el alumno ${alumnoEncontrado.nombre}` });
+    res.json({ 
+        success: true, 
+        message: `Asistencia registrada y estado de presencia actualizado para el alumno ${alumno.nombre}`, 
+        encontrado: true,
+        alumno: alumno
+    });
+});
+
+// Configuración de socket.io y escucha del evento nuevaAsistencia
+io.on('connection', (socket) => {
+    console.log('Cliente conectado');
+
+    socket.on('nuevaAsistencia', ({ alumnoId }) => {
+        const docentes = readDocentesFile();
+        let alumnoActualizado = false;
+
+        for (const docente of docentes) {
+            for (const curso of docente.cursos) {
+                const alumno = curso.alumnos.find(a => a.id === alumnoId);
+                if (alumno) {
+                    alumno.status = true;
+                    alumnoActualizado = true;
+                    break;
+                }
+            }
+            if (alumnoActualizado) break;
+        }
+
+        if (alumnoActualizado) {
+            writeDocentesFile(docentes);
+        }
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Cliente desconectado');
+    });
 });
 
 // Endpoint para obtener los estudiantes de un curso de un profesor
@@ -78,20 +108,6 @@ router.get('/estudiantes/:docenteId/:cursoCodigo', (req, res) => {
 
     res.json(curso.alumnos);
 });
-// Endpoint para obtener todos los usuarios con datos en duro
-router.get('/usuarios', (req, res) => {
-    const usuarios = [
-        { id: 'usuario-1', nombre: 'Juan Pérez', email: 'juan.perez@duoc.cl' },
-        { id: 'usuario-2', nombre: 'María López', email: 'maria.lopez@duoc.cl' },
-        { id: 'usuario-3', nombre: 'Carlos Sánchez', email: 'carlos.sanchez@duoc.cl' },
-        { id: 'usuario-4', nombre: 'Ana Torres', email: 'ana.torres@duoc.cl' },
-        { id: 'usuario-5', nombre: 'Luis Gómez', email: 'luis.gomez@duoc.cl' }
-    ];
-
-    res.json(usuarios);
-});
-
-
 
 // Exportar el servidor junto con el router
 module.exports = { router, server };
